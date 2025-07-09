@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BTC Price Predictor</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #1e1e2f;
+            color: #fff;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        form {
+            background: #2d2d44;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 0 15px #000;
+        }
+        input {
+            padding: 10px;
+            margin: 10px;
+            width: 100%;
+            border-radius: 6px;
+            border: none;
+        }
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            background-color: #8E04FF;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <h1>BTC Price Predictor</h1>
+    <form id="predictForm">
+        <input type="number" step="any" id="open" placeholder="Open Price" required><br>
+        <input type="number" step="any" id="high" placeholder="High Price" required><br>
+        <input type="number" step="any" id="low" placeholder="Low Price" required><br>
+        <button type="submit">Predict Close Price</button>
+    </form>
+    <div id="result"></div>
+
+    <script>
+        document.getElementById('predictForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const open = parseFloat(document.getElementById('open').value);
+            const high = parseFloat(document.getElementById('high').value);
+            const low = parseFloat(document.getElementById('low').value);
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ open, high, low })
+            });
+
+            const result = await response.json();
+            document.getElementById('result').innerText = "Predicted Close Price: $" + result.predicted_close;
+        });
+    </script>
+</body>
+</html>

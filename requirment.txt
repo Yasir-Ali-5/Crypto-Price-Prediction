@@ -1,0 +1,9 @@
+fastapi
+uvicorn[standard]
+openai
+python-dotenv
+jinja2
+dotenv
+tensorflow
+joblib
+scikit-learn
